@@ -1,0 +1,36 @@
+html {
+    font-family: sans-serif;
+}
+
+#result {
+    border: 5px solid green;
+    padding: 1em;
+}
+
+.single-result, .issues {
+    border: 1px solid black;
+    padding: 1em;
+    margin-bottom: 1em;
+}
+
+.issues {
+    color: darkred;
+}
+
+button {
+    background-color: lightgray;
+    border: 1px solid gray;
+    border-radius: .2em;
+    padding: .3em .6em;
+    margin-bottom: 1em;
+    cursor:pointer;
+}
+
+textarea {
+    width: 100%;
+}
+
+.copied {
+    color: white;
+    background-color: darkgreen;
+}
