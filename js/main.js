@@ -50,22 +50,23 @@ const copyToClipboard = (str) => {
 }
 
 const getTweetText = (i, row) => {
-    return `${place(i)} ${flag(row.Country)} (${row.averageRank.toFixed(2)})
+    return `${place(i, row.tiebreak)} ${flag(row.Country)} (${row.averageRank.toFixed(2)})
 ${row.Artist} – ${row.Song} (${row.Year})
 
 Highest rank: ${rank(row.minValue)} (${jurorz(row.minJurors)})
 Lowest rank: ${rank(row.maxValue)} (${(jurorz(row.maxJurors))})`;
 }
 
-const place = (number) => {
+const place = (number, tiebreak) => {
+    let tiebreakIndicator = tiebreak ? '(TB) ' : '';
     if (number === 1) {
-        return '🥇';
+        return tiebreakIndicator + '🥇';
     } else if (number === 2) {
-        return '🥈';
+        return tiebreakIndicator + '🥈';
     } else if (number === 3) {
-        return '🥉';
+        return tiebreakIndicator + '🥉';
     }
-    return `${number}.`;
+    return `${tiebreakIndicator}${number}.`;
 }
 
 const rank = (number) => {
@@ -176,6 +177,7 @@ const validateEntriesForJuror = (juror, entries, count) => {
 
 const addAverageRanksAndMinMaxStats = (data, jurors) => {
     const firstJuror = jurors[0];
+    let previousRow;
     for (let row of data) {
         let sum = 0;
         let minValue = parseInt(row[firstJuror]);
@@ -200,6 +202,14 @@ const addAverageRanksAndMinMaxStats = (data, jurors) => {
                 row.maxJurors.push(juror);
             }
         }
+        row.tiebreak = false;
+        if(previousRow){
+            if(Math.abs(previousRow.averageRank - row.averageRank) < 0.001){
+                previousRow.tiebreak = true
+                row.tiebreak = true
+            }
+        }
+        previousRow = row;
     }
 }
 
